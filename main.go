@@ -43,6 +43,7 @@ func main() {
 	e.GET("/test", chat.GetMessageListHandler)
 	e.POST("/api/v1/auth/signup", auth.PostSignupHandler)
 	e.GET("/ap1/v1/auth/token", auth.GetToken)
+	e.GET("/api/v1/auth/user", auth.GetUser)
 	// message api
 	//e.POST("/api/v1/messages/", chat.PostMessageHandler)
 

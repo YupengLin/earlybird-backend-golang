@@ -21,8 +21,9 @@ import (
 )
 
 var (
-	saltMax          *big.Int = big.NewInt(9223372036854775807)
-	password_version int64    = 1
+	saltMax             *big.Int = big.NewInt(9223372036854775807)
+	password_version    int64    = 1
+	ErrPasspartMismatch          = errors.New("passPart doesn't match DB")
 )
 
 func PostSignupHandler(c echo.Context) (err error) {
