@@ -4,15 +4,25 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	_ "github.com/lib/pq"
 )
 
 var (
-	DB *sql.DB
+	DB     *sql.DB
+	Config config
 )
 
+type config struct {
+	JwtSecret []byte
+}
+
 func init() {
+	Config = config{
+		JwtSecret: []byte(os.Getenv("JWT_SECRET")),
+	}
+
 	DB = getDb()
 }
 

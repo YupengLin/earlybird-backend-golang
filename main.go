@@ -1,6 +1,7 @@
 package main
 
 import (
+	"./auth"
 	"./chat"
 	"./chatroom"
 
@@ -40,6 +41,8 @@ func main() {
 
 	e.GET("/", chat.GetMessageListHandler)
 	e.GET("/test", chat.GetMessageListHandler)
+	e.POST("/api/v1/auth/signup", auth.PostSignupHandler)
+	e.GET("/ap1/v1/auth/token", auth.GetToken)
 	// message api
 	//e.POST("/api/v1/messages/", chat.PostMessageHandler)
 
