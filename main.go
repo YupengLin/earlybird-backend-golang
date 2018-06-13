@@ -4,6 +4,7 @@ import (
 	"./auth"
 	"./chat"
 	"./chatroom"
+	"./checkin"
 
 	"net/http"
 
@@ -44,6 +45,8 @@ func main() {
 	e.POST("/api/v1/auth/signup", auth.PostSignupHandler)
 	e.GET("/ap1/v1/auth/token", auth.GetToken)
 	e.GET("/api/v1/auth/user", auth.GetUser)
+	e.POST("/api/v1/checkin/image", checkin.PostImageHandler)
+	e.GET("/api/v1/activity", checkin.GetUserOwnActivityHandler)
 	// message api
 	//e.POST("/api/v1/messages/", chat.PostMessageHandler)
 
