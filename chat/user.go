@@ -2,6 +2,7 @@ package chat
 
 import (
 	"database/sql"
+	"log"
 
 	"../common"
 	//"net/http"
@@ -11,9 +12,10 @@ import (
 
 func CheckUserExist(username string) (userId *int64) {
 
-	err := common.DB.QueryRow(`select user_id from user_ where username=?`,
+	err := common.DB.QueryRow(`select id from user_ where username=$1`,
 		username).Scan(&userId)
 	if err != nil && err != sql.ErrNoRows {
+		log.Print(err.Error())
 		return
 	}
 

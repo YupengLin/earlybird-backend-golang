@@ -61,3 +61,12 @@ func CreateNewMessage(message *model.Message) (err error) {
 	}
 	return
 }
+
+func GetMessageExampleHandler(c echo.Context) (err error) {
+	message := model.Message{}
+	username := "yupeng"
+	message.Username = &username
+	messageContent := "test text message"
+	message.MessageContent = &messageContent
+	return c.JSON(200, message)
+}

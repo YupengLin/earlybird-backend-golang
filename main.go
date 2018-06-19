@@ -49,7 +49,7 @@ func main() {
 	e.GET("/api/v1/activity", checkin.GetUserOwnActivityHandler)
 	// message api
 	//e.POST("/api/v1/messages/", chat.PostMessageHandler)
-
+	e.GET("/api/v1/message_example", chat.GetMessageExampleHandler)
 	server := chatroom.NewServer()
 	go server.Init()
 	e.GET("/ws", func(c echo.Context) error {
@@ -61,6 +61,7 @@ func main() {
 		err := chat.GetMessageListHandler(c)
 		return err
 	})
+
 	e.Logger.Fatal(e.Start(":8000"))
 
 	/*	if err := http.ListenAndServe(":8000", nil); err != nil {
