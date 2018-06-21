@@ -5,6 +5,7 @@ import (
 	"./chat"
 	"./chatroom"
 	"./checkin"
+	"./profile"
 
 	"net/http"
 
@@ -50,6 +51,11 @@ func main() {
 	// message api
 	//e.POST("/api/v1/messages/", chat.PostMessageHandler)
 	e.GET("/api/v1/message_example", chat.GetMessageExampleHandler)
+
+	//profile
+	e.POST("/api/v1/profile/thumbnail", profile.PostProfileThumbnailHandler)
+	e.POST("/api/v1/profile/username", profile.PostProfileUsernameHandler)
+
 	server := chatroom.NewServer()
 	go server.Init()
 	e.GET("/ws", func(c echo.Context) error {
