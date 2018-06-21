@@ -164,18 +164,16 @@ func Listen(server *ChatServer, c echo.Context) error {
 	log.Print("websocket start")
 	msg := model.Message{}
 	err = ws.ReadJSON(&msg)
-	msg.UUID = uuid.NewV4().String()
-	//j, _ := json.Marshal(msg)
-	//log.Print(string(j))
 	if err != nil {
 		if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 			log.Printf("error: %v", err)
 		} else {
-			log.Print("oterh err" + err.Error())
+			log.Print("other err" + err.Error())
 		}
 		ws.Close()
 		return err
 	}
+	msg.UUID = uuid.NewV4().String()
 
 	log.Print(*msg.MessageContent)
 	user := server.Join(msg, ws)
@@ -189,8 +187,6 @@ func Listen(server *ChatServer, c echo.Context) error {
 		log.Print("wait")
 		msg := model.Message{}
 		err = ws.ReadJSON(&msg)
-		msg.UUID = uuid.NewV4().String()
-
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 				log.Printf("error: %v", err)
@@ -201,6 +197,8 @@ func Listen(server *ChatServer, c echo.Context) error {
 			server.updateOnlineUserList(user)
 			return err
 		}
+		msg.UUID = uuid.NewV4().String()
+		log.Print(*msg.MessageContent)
 		if user.Username != nil && msg.Username != nil {
 			if strings.TrimSpace(*user.Username) != strings.TrimSpace(*msg.Username) {
 				chat.UpdateUser(*user.Username, *msg.Username)
@@ -247,13 +245,13 @@ InfiLoop:
 			break InfiLoop
 		}
 	}
-	if len(userList) > 0 {
-		for _, client := range server.OnlineUsers {
-			client.Socket.WriteJSON([]map[string]interface{}{
-				userList,
-			})
-		}
-	}
+	// if len(userList) > 0 {
+	// 	for _, client := range server.OnlineUsers {
+	// 		client.Socket.WriteJSON([]map[string]interface{}{
+	// 			userList,
+	// 		})
+	// 	}
+	// }
 
 	if len(messages) > 0 {
 		for _, client := range server.OnlineUsers {
