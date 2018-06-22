@@ -108,9 +108,10 @@ func (server *ChatServer) Join(msg model.Message, conn *websocket.Conn) *Client 
 		User:           model.User{UserID: 0, Username: getPointer("system")},
 	})
 
-	client.Send([]*model.Message{
-		&msg,
-	})
+	// client.Send([]*model.Message{
+	// 	&msg,
+	// })
+	server.AddMessage(msg)
 
 	log.Print("sent")
 
@@ -184,7 +185,6 @@ func Listen(server *ChatServer, c echo.Context) error {
 	}
 
 	for {
-		log.Print("wait")
 		msg := model.Message{}
 		err = ws.ReadJSON(&msg)
 		if err != nil {

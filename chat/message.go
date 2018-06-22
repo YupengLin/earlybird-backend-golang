@@ -2,6 +2,7 @@ package chat
 
 import (
 	"database/sql"
+	"log"
 
 	"../common"
 	model "../models"
@@ -50,13 +51,10 @@ func GetAllMessageList() (messages []*model.Message, err error) {
 }
 
 func CreateNewMessage(message *model.Message) (err error) {
-	ins, err := common.DB.Prepare(`insert into message(message_uuid,user_id,message_type,message_content,created_at)
-		values(?,?,?,?,CURRENT_TIMESTAMP())`)
+	_, err = common.DB.Exec(`insert into message(message_uuid,user_id,message_type,message_content,created_at)
+		values($1, $2, $3, $4,now())`, message.UUID, message.UserID, message.MessageType, message.MessageContent)
 	if err != nil {
-		return err
-	}
-	_, err = ins.Exec(message.UUID, message.UserID, message.MessageType, message.MessageContent)
-	if err != nil {
+		log.Print(err.Error())
 		return err
 	}
 	return

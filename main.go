@@ -47,6 +47,7 @@ func main() {
 	e.GET("/ap1/v1/auth/token", auth.GetToken)
 	e.GET("/api/v1/auth/user", auth.GetUser)
 	e.POST("/api/v1/checkin/image", checkin.PostImageHandler)
+	e.POST("/api/v1/checkin/audio", checkin.PostAudioHanlder)
 	e.GET("/api/v1/activity", checkin.GetUserOwnActivityHandler)
 	// message api
 	//e.POST("/api/v1/messages/", chat.PostMessageHandler)
