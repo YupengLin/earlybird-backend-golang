@@ -51,7 +51,7 @@ func main() {
 	e.GET("/api/v1/activity", checkin.GetUserOwnActivityHandler)
 	// message api
 	//e.POST("/api/v1/messages/", chat.PostMessageHandler)
-	e.GET("/api/v1/message_example", chat.GetMessageExampleHandler)
+	e.GET("/api/v1/message_example/history", chat.GetMessageExampleHandler)
 
 	//profile
 	e.POST("/api/v1/profile/thumbnail", profile.PostProfileThumbnailHandler)
