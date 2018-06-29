@@ -167,9 +167,9 @@ func Listen(server *ChatServer, c echo.Context) error {
 	err = ws.ReadJSON(&msg)
 	if err != nil {
 		if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-			log.Printf("error: %v", err)
+			log.Printf("WEB SOCKET:error: %v", err)
 		} else {
-			log.Print("other err" + err.Error())
+			log.Print("WEB SOCKET: other err" + err.Error())
 		}
 		ws.Close()
 		return err
@@ -232,6 +232,9 @@ InfiLoop:
 		select {
 		case message := <-server.NewMessage:
 			messages = append(messages, message)
+			for _, client := range server.OnlineUsers {
+				client.SendSingleMessage(message)
+			}
 		case <-server.NewUser:
 			//	user["username"] = *newUser.Username
 			//	user["created_at"] = time.Now().String()
@@ -253,9 +256,9 @@ InfiLoop:
 	// 	}
 	// }
 
-	if len(messages) > 0 {
-		for _, client := range server.OnlineUsers {
-			client.Send(messages)
-		}
-	}
+	// if len(messages) > 0 {
+	// 	for _, client := range server.OnlineUsers {
+	// 		client.Send(messages)
+	// 	}
+	// }
 }

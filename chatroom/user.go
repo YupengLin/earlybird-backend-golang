@@ -61,6 +61,10 @@ func (client *Client) Send(messages []*model.Message) {
 	client.Socket.WriteJSON(messages)
 }
 
+func (client *Client) SendSingleMessage(message *model.Message) {
+	client.Socket.WriteJSON(message)
+}
+
 // Client has a new message to broadcast
 func (client *Client) NewMessage(message model.Message) {
 	message.MessageType = "user-message"
