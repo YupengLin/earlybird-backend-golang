@@ -52,46 +52,7 @@ func (server *ChatServer) Init() {
 }
 
 func (server *ChatServer) Join(msg model.Message, conn *websocket.Conn) *Client {
-	// if msg.Username == nil {
-	// 	temp := "guest" + time.Now().String()
-	// 	client := &Client{
-	// 		User:   model.User{Username: &temp},
-	// 		Socket: conn,
-	// 		Server: server,
-	// 	}
-	// 	return client
-	// }
-	uid := chat.CreateNewUser(*msg.Username)
-	msg.UserID = uid
 
-	// if msg.Register != nil && *msg.Register == true {
-	// 	gue := server.OnlineUsers[*msg.Guestname]
-	// 	gue.Username = msg.Username
-	// 	gue.Socket = conn
-	// 	gue.Server = server
-	// 	server.OnlineUsers[*msg.Username] = gue
-	// 	//u.Username = msg.Username
-	// 	//delete(server.OnlineUsers, *msg.Guestname)
-	// 	server.AddMessage(model.Message{
-	// 		UUID:           uuid.NewV4().String(),
-	// 		MessageType:    "system-message",
-	// 		CreatedAt:      time.Now(),
-	// 		MessageContent: getPointer(*msg.Username + " has joined the chat."),
-	// 		User:           model.User{UserID: 0, Username: getPointer("system")},
-	// 	})
-	// }
-
-	// if _, exists := server.OnlineUsers[*msg.Username]; exists && len(*msg.Username) >= 3 {
-	// 	u := server.OnlineUsers[*msg.Username]
-	// 	server.updateOnlineUserList(&u)
-	// 	return &u
-	// } else if _, exists := server.OfflineUsers[*msg.Username]; exists && len(*msg.Username) >= 3 {
-	// 	u := server.OfflineUsers[*msg.Username]
-	// 	delete(server.OfflineUsers, *msg.Username)
-	// 	server.OnlineUsers[*msg.Username] = u
-	// 	server.updateOnlineUserList(&u)
-	// 	return &u
-	// }
 	client := &Client{
 		User:   model.User{Username: msg.Username, UserID: msg.UserID},
 		Socket: conn,
@@ -108,12 +69,7 @@ func (server *ChatServer) Join(msg model.Message, conn *websocket.Conn) *Client 
 		User:           model.User{UserID: 0, Username: getPointer("system")},
 	})
 
-	// client.Send([]*model.Message{
-	// 	&msg,
-	// })
 	server.AddMessage(msg)
-
-	log.Print("sent")
 
 	return client
 }
@@ -176,7 +132,7 @@ func Listen(server *ChatServer, c echo.Context) error {
 	}
 	msg.UUID = uuid.NewV4().String()
 
-	log.Print(*msg.MessageContent)
+	log.Print("WEB SOCKET: FIRST MESSAGE: ", *msg.MessageContent)
 	user := server.Join(msg, ws)
 
 	if user == nil {
