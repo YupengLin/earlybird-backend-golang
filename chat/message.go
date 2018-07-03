@@ -12,11 +12,15 @@ import (
 )
 
 func GetMessageListHandler(c echo.Context) (err error) {
-	rows, err := common.DB.Query(`select m.message_uuid, m.id,m.user_id,m.message_content,m.created_at,
+	rows, err := common.DB.Query(`with lm as (
+		select m.message_uuid, m.id,m.user_id,m.message_content,m.created_at,
 		u.username,message_type from message m
 		join user_ u on u.id =  m.user_id
 		where m.message_content != ''
-		order by created_at asc limit 100`)
+		order by created_at DESC limit 100)
+
+		select lm.message_uuid, lm.id, lm.user_id,lm.message_content,lm.created_at,
+		lm.username,lm.message_type from lm order by created_at asc`)
 	if err != nil && err != sql.ErrNoRows {
 		return c.JSON(400, err.Error())
 	}
